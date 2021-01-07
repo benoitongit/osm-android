@@ -1,17 +1,19 @@
 # tile
 
-Android is free map library using Open street map tiles.
+Tile is a free Android map library using OpenStreetMap tiles.
 
 ## Features
 
 * Works offline, tiles are saved in a local sqlite database
+* Show current location
 * Overlays
   * markers
   * tracks
   * polygon
 
 ## Requirements
-...
+
+Tile works on Android X.X+ (API level XX+) and on Java X+.
 
 ## Gettting started
 
