@@ -12,17 +12,9 @@ import java.util.Vector;
 import android.util.Log;
 
 public class RequestTile {
-
-	/* Switching the urls to OpenStreetMaps from cloudmade
-	 * private static final String URL_OSM_A = "http://andy.sandbox.cloudmade.com/tiles/cycle/";
-	private static final String URL_OSM_B = "http://andy.sandbox.cloudmade.com/tiles/cycle/";
-	private static final String URL_OSM_C = "http://andy.sandbox.cloudmade.com/tiles/cycle/";
-	*/
-	
-	private static final String URL_OSM_A = "http://tile.openstreetmap.org/";
-	private static final String URL_OSM_B = "http://tile.openstreetmap.org/";
-	private static final String URL_OSM_C = "http://tile.openstreetmap.org/";
-	
+	private static final String URL_OSM_A = "https://a.tile.openstreetmap.org/";
+	private static final String URL_OSM_B = "https://b.tile.openstreetmap.org/";
+	private static final String URL_OSM_C = "https://c.tile.openstreetmap.org/";
 	
 	private static final int IO_BUFFER_SIZE = 8192;
 	
