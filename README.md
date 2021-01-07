@@ -32,7 +32,7 @@ You can adjust the permissions accordingly, depending on what is used.
 ### Map initialization
 
 ```
-private OsmMapView mOsmMapView;
+private OsmMapView mapView;
 
 @Override
 public void onCreate(Bundle savedInstanceState) {
@@ -40,23 +40,25 @@ public void onCreate(Bundle savedInstanceState) {
 
   OsmMapView.OsmMapViewBuilder mapBuilder = new OsmMapView.OsmMapViewBuilder();
   mapBuilder.setIsNetworkRequestAllowed(true);
-  mOsmMapView = new OsmMapView(getApplicationContext(), mapBuilder, this);
+  mapView = new OsmMapView(getApplicationContext(), mapBuilder, this);
 
   ViewGroup mapLayout = (ViewGroup) findViewById(R.id.mapLayout);
   RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.FILL_PARENT);
-  mapLayout.addView(mOsmMapView, layoutParams);
+  mapLayout.addView(mapView, layoutParams);
 
-  mOsmMapView.setCenter(37.7793, -122.4192);
-  mOsmMapView.setZoom(12); 
+  mapView.setCenter(37.7793, -122.4192);
+  mapView.setZoom(12); 
 }
 ```
 
 ### Map Overlays
 
+**How to add the position indicator overlay**
 ```
 OsmMapView.OsmMapViewBuilder mapBuilder = new OsmMapView.OsmMapViewBuilder();
-OsmLocationOverlay osmLocationOverlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mapView);
-osmMapView.addOverlay(osmLocationOverlay);
+mapBuilder.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
+OsmLocationOverlay locationOverlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mapView);
+mapView.addOverlay(locationOverlay);
 ```
