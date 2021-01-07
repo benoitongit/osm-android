@@ -1,0 +1,3 @@
+include ':OpenStreetMapLibrary'
+include ':app'
+rootProject.name = "HackathonOpenStreetMap2"
