@@ -2,17 +2,24 @@ package com.hackathonopenstreetmap2;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import androidx.core.content.ContextCompat;
+
+import com.android.lib.map.osm.GeoPoint;
 import com.android.lib.map.osm.OsmMapView;
 import com.android.lib.map.osm.controller.IMapInteractionListener;
 import com.android.lib.map.osm.helpers.OsmDatabaseHelper;
 import com.android.lib.map.osm.models.OsmModel;
 import com.android.lib.map.osm.overlay.MapMarker;
 import com.android.lib.map.osm.overlay.OsmLocationOverlay;
+import com.android.lib.map.osm.overlay.OsmMarkerOverlay;
+
 import java.io.File;
 
 public class MapActivity extends Activity implements IMapInteractionListener,
@@ -70,12 +77,14 @@ public class MapActivity extends Activity implements IMapInteractionListener,
 
         ViewGroup mapLayout = (ViewGroup) findViewById(R.id.mapLayout);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         mapLayout.addView(mOsmMapView, layoutParams);
 
+        addMarkers();
+
         mOsmMapView.setCenter(37.7793, -122.4192);
-        mOsmMapView.setZoom(12);
+        mOsmMapView.setZoom(4);
     }
 
     private void initOsmDatabase() {
@@ -91,6 +100,28 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         if (success) {
             OsmModel.mDbHelper = osmDbHelper;
         }
+    }
+
+    private void addMarkers() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.tubi_marker);
+        OsmMarkerOverlay markerOverlay = new OsmMarkerOverlay(mOsmMapView, drawable);
+        // Tubi SF office
+        addMarker(new GeoPoint((int) (37.792260 * 1e6), (int) (-122.403490 * 1e6)), markerOverlay);
+        // Chicago SF office
+        addMarker(new GeoPoint((int) (41.888650 * 1e6), (int) (-87.627460 * 1e6)), markerOverlay);
+        // LA SF office
+        addMarker(new GeoPoint((int) (34.057330 * 1e6), (int) (-118.417170 * 1e6)), markerOverlay);
+        // NYC SF office
+        addMarker(new GeoPoint((int) (40.754080 * 1e6), (int) (-73.988820 * 1e6)), markerOverlay);
+        // Beijing SF office
+        addMarker(new GeoPoint((int) (40.009477 * 1e6), (int) (116.461179 * 1e6)), markerOverlay);
+        mOsmMapView.addOverlay(markerOverlay);
+    }
+
+    private void addMarker(GeoPoint p, OsmMarkerOverlay markerOverlay) {
+        MapMarker marker = new MapMarker();
+        marker.setCoordinate(p);
+        markerOverlay.addMarker(marker);
     }
 
     @Override
