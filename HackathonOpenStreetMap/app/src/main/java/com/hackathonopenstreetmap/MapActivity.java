@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -31,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import io.ticofab.androidgpxparser.parser.GPXParser;

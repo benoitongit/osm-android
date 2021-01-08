@@ -1,8 +1,6 @@
 package com.android.lib.map.osm;
 
 
-import android.util.Log;
-
 public class Projection {
 
 	// OrignShift  2 * math.pi * 6378137 / 2.0
