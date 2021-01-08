@@ -121,7 +121,7 @@ public class MapActivity extends Activity implements IMapInteractionListener,
     private void addMarkers() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.tubi_marker);
         OsmMarkerOverlay markerOverlay = new OsmMarkerOverlay(mOsmMapView, drawable);
-        // Tubi SF office
+        // SF office
         addMarker(new GeoPoint(37.792260, -122.403490), markerOverlay);
         // Chicago SF office
         addMarker(new GeoPoint(41.888650, -87.627460), markerOverlay);

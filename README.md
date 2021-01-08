@@ -2,6 +2,8 @@
 
 Tile is a free Android map library using OpenStreetMap tiles.
 
+![alt text](https://github.com/benoitongit/tile/blob/main/screenshot.jpg?raw=true)
+
 ## Features
 
 * Works offline, tiles are saved in a local sqlite database
@@ -9,7 +11,7 @@ Tile is a free Android map library using OpenStreetMap tiles.
 * Overlays
   * markers
   * tracks
-  * polygon
+  * polygons
 
 ## Requirements
 
@@ -62,8 +64,8 @@ public void onCreate(Bundle savedInstanceState) {
 ```
 OsmMapView.OsmMapViewBuilder mapBuilder = new OsmMapView.OsmMapViewBuilder();
 mapBuilder.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
-OsmLocationOverlay locationOverlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mapView);
-mapView.addOverlay(locationOverlay);
+OsmLocationOverlay overlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mapView);
+mapView.addOverlay(overlay);
 ```
 
 **How to add a marker**
