@@ -15,12 +15,12 @@ public class InDbTileLoader extends Thread {
 	private static final int STACK_DB_QUERY_LIMIT = 16;
 	private static final int MAX_TILES_REQUEST_PER_SQL_QUERY = 16;
 	
-	private Stack<Tile> mTiles;
-	private IDbTileLoaderListener mDbTileLoaderListener;
+	private final Stack<Tile> mTiles;
+	private final IDbTileLoaderListener mDbTileLoaderListener;
 
 	
 	public InDbTileLoader(IDbTileLoaderListener dbTileLoaderListener) {
-		mTiles = new Stack<Tile>();
+		mTiles = new Stack<>();
 		mDbTileLoaderListener = dbTileLoaderListener;
 		start();
 	}
@@ -34,7 +34,6 @@ public class InDbTileLoader extends Thread {
 					mTiles.remove(mTiles.lastElement());
 
 				mTiles.push(tile);
-				//Log.i("InDbTileLoader", "InDbTileLoader ADD size=" + mTiles.size());
 
 				this.notify();
 			}
@@ -44,7 +43,7 @@ public class InDbTileLoader extends Thread {
 	@Override
 	public void run() {
 		
-		List<Tile> tiles = new ArrayList<Tile>();
+		List<Tile> tiles = new ArrayList<>();
 
 		while(true) {
 			
@@ -60,24 +59,22 @@ public class InDbTileLoader extends Thread {
 			
 			if (tiles.size() > 0) {
 
-				List<Tile> tilesNotLoaded = new ArrayList<Tile>();
-				Map<Tile, Bitmap> tilesLoaded = new HashMap<Tile, Bitmap>();
+				List<Tile> tilesNotLoaded = new ArrayList<>();
+				Map<Tile, Bitmap> tilesLoaded = new HashMap<>();
 				Map<Tile, Bitmap> map = MapTile.getTiles(tiles);
-				if (map != null) {
-					for (Map.Entry<Tile, Bitmap> entry : map.entrySet()) {
-						Tile tile = entry.getKey();
-						Bitmap bitmap = entry.getValue();
-						if (bitmap == null)
-							tilesNotLoaded.add(tile);
-						else
-							tilesLoaded.put(tile, bitmap);
-					}
-					
-					if (tilesLoaded.size() > 0)
-						mDbTileLoaderListener.onTilesLoadedFromDb(tilesLoaded);
-					if (tilesNotLoaded.size() > 0)
-						mDbTileLoaderListener.onTilesNotLoadedFromDb(tilesNotLoaded);
+				for (Map.Entry<Tile, Bitmap> entry : map.entrySet()) {
+					Tile tile = entry.getKey();
+					Bitmap bitmap = entry.getValue();
+					if (bitmap == null)
+						tilesNotLoaded.add(tile);
+					else
+						tilesLoaded.put(tile, bitmap);
 				}
+
+				if (tilesLoaded.size() > 0)
+					mDbTileLoaderListener.onTilesLoadedFromDb(tilesLoaded);
+				if (tilesNotLoaded.size() > 0)
+					mDbTileLoaderListener.onTilesNotLoadedFromDb(tilesNotLoaded);
 			}
 			
 			try {
@@ -151,7 +148,7 @@ public class InDbTileLoader extends Thread {
 	}
 	
 	public interface IDbTileLoaderListener {
-		public void onTilesLoadedFromDb(Map<Tile, Bitmap> tileBitmapMap);
-		public void onTilesNotLoadedFromDb(List<Tile> tiles);
+		void onTilesLoadedFromDb(Map<Tile, Bitmap> tileBitmapMap);
+		void onTilesNotLoadedFromDb(List<Tile> tiles);
 	}
 }

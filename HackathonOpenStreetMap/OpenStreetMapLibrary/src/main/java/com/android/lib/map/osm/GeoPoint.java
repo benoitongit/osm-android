@@ -24,13 +24,10 @@ public class GeoPoint implements Serializable {
     public double normalizeLatitude(double latitude) {
     	 
     	if (!Double.isNaN(latitude)) {
-    		
 	         if (latitude < -90) 
-	 	            return (double)(-90* 1E6); 
+	 	            return -90 * 1E6;
 	 		 else if (latitude > 90) 
-	 	            return (double)( 90* 1E6); 
-	 
-
+	 	            return 90 * 1E6;
     	}
 
     	return latitude * 1E6;
@@ -40,16 +37,16 @@ public class GeoPoint implements Serializable {
     	if (!Double.isNaN(longitude)) {
 
     		 if (longitude < -180) 
-    	            return ((double)((longitude - 180) % 360) + 180 )* 1E6; 
+    	            return (((longitude - 180) % 360) + 180 ) * 1E6;
     		 else if (longitude > 180) 
-    	            return ((double)((longitude + 180) % 360) - 180 )* 1E6; 
+    	            return (((longitude + 180) % 360) - 180 ) * 1E6;
     
     	   	}
 
     	return longitude * 1E6;
     }
     public void setLongitudeE6(int longitudeE6) {
-        this .longitudeE6 =  (int)(normalizeLongitude((double)(longitudeE6 / 1E6)));
+        this .longitudeE6 =  (int)(normalizeLongitude(longitudeE6 / 1E6));
     }
 
     public GeoPoint() {

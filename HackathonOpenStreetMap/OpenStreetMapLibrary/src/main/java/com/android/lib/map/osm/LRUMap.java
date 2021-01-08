@@ -6,7 +6,7 @@ import java.util.Map;
 public class LRUMap<K, V> extends LinkedHashMap<K, V> {
 
 	private static final long serialVersionUID = 1L;
-	private int maxCapacity;
+	private final int maxCapacity;
 
 	public LRUMap(int initialCapacity, int maxCapacity) {
 		super(initialCapacity, 0.75f, true);

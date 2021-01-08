@@ -15,16 +15,17 @@ import com.android.lib.map.osm.OsmMapView;
 
 public class OsmTrackOverlay extends OsmOverlay {
 
-	private List<MapTrack> mTracks;
+	private final OsmMapView mMapView;
+	private final List<MapTrack> mTracks;
+	private final Map<Path, Point> mStartPoints;
+
 	private GeoPoint mStartLocation;
-	private OsmMapView mMapView;
-	private Map<Path, Point> mStartPoints;
 	
 	public OsmTrackOverlay(OsmMapView mapView) {
 
-		mTracks = new ArrayList<MapTrack>();
+		mTracks = new ArrayList<>();
 		mMapView = mapView;
-		mStartPoints = new HashMap<Path, Point>();
+		mStartPoints = new HashMap<>();
 	}
 	
 	public void addTrack(MapTrack track) {

@@ -15,16 +15,16 @@ import com.android.lib.map.osm.OsmMapView;
 
 public class OsmPolygonOverlay extends OsmOverlay {
 
-	private List<MapPolygon> mPolygons;
+	private final OsmMapView mMapView;
+	private final Map<MapPolygon, Point> mStartPoints;
+	private final List<MapPolygon> mPolygons;
+
 	private GeoPoint mStartLocation;
-	private Map<MapPolygon, Point> mStartPoints;
-	private OsmMapView mMapView;
-	
 	
 	public OsmPolygonOverlay(OsmMapView mapView) {
 		mMapView = mapView;
-		mStartPoints = new HashMap<MapPolygon, Point>();
-		mPolygons = new ArrayList<MapPolygon>();
+		mStartPoints = new HashMap<>();
+		mPolygons = new ArrayList<>();
 	}
 	
 	public void addPolygon(MapPolygon polygon) {
@@ -50,7 +50,7 @@ public class OsmPolygonOverlay extends OsmOverlay {
 			Path path = mapPolygon.getPath();
 			if (path.isEmpty())
 				drawPathForMapPolygon(mapPolygon);
-			offsetPath(path);
+			offsetPath(mapPolygon);
 			canvas.drawPath(path, mapPolygon.getPaintStroke());
 			canvas.drawPath(path, mapPolygon.getPaint());
 		}
@@ -89,8 +89,6 @@ public class OsmPolygonOverlay extends OsmOverlay {
 		}
 
 		path.close();
-		
-		previousPoint = null;
 	}
 	
 	@Override
@@ -102,8 +100,9 @@ public class OsmPolygonOverlay extends OsmOverlay {
 		}
 	}
 	
-	private void offsetPath(Path path) {
-		Point startPoint = mStartPoints.get(path);
+	private void offsetPath(MapPolygon mapPolygon) {
+		Point startPoint = mStartPoints.get(mapPolygon);
+		Path path = mapPolygon.getPath();
 
 		if (startPoint == null && path != null && !path.isEmpty()) {
 			for (MapPolygon polygon : mPolygons) {

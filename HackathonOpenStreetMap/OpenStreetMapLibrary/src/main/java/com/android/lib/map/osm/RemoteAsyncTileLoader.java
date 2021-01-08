@@ -10,7 +10,7 @@ public class RemoteAsyncTileLoader {
 	
 	private static final int NB_THREAD_FOR_TILE_REQUEST = 3;
 	
-	private TileRequestTask[] mDownloadTileTasks;
+	private final TileRequestTask[] mDownloadTileTasks;
 	private int mIterator;
 
 	
@@ -29,18 +29,15 @@ public class RemoteAsyncTileLoader {
 		// Make sure the zoom is not > to the actual max Tile OSM zoom 
 		if (tile.zoom > OsmMapViewBase.MIN_ZOOM_LEVEL_FOR_TILES)
 			return;
-		//---
 			
 		// Check if tile is not already in a thread
-		for (int i = 0; i < mDownloadTileTasks.length; i++) {
-			if (mDownloadTileTasks[i].mRequestsQueue.contains(tile))
+		for (TileRequestTask downloadTileTask : mDownloadTileTasks) {
+			if (downloadTileTask.mRequestsQueue.contains(tile))
 				return;
 		}
-		//---
 
 		// if not add it
 		mDownloadTileTasks[mIterator].queue(tile);
-		//--
 		
 		mIterator++;
 		if (mIterator == mDownloadTileTasks.length)
@@ -48,8 +45,8 @@ public class RemoteAsyncTileLoader {
 	}
 
 	public void interruptThreads() {
-		for (int i = 0; i < mDownloadTileTasks.length; i++) {
-			mDownloadTileTasks[i].interrupt();
+		for (TileRequestTask downloadTileTask : mDownloadTileTasks) {
+			downloadTileTask.interrupt();
 		}
 	}
 	
@@ -59,8 +56,8 @@ public class RemoteAsyncTileLoader {
 		
 		public RequestsQueue mRequestsQueue;
 		
-		private RequestTile mRequestTile;
-		private Handler mHandler;
+		private final RequestTile mRequestTile;
+		private final Handler mHandler;
 		
 		public TileRequestTask(Handler handler) {
 			mHandler = handler;
@@ -111,7 +108,7 @@ public class RemoteAsyncTileLoader {
 
 					Message message = mHandler.obtainMessage();
 					
-					if (remoteTile != null && remoteTile.bitmap != null && remoteTile.bitmap.length > 0) {
+					if (remoteTile.bitmap != null && remoteTile.bitmap.length > 0) {
 						MapTile.insertTile(remoteTile, remoteTile.bitmap);
 						message.what = TileHandler.TILE_LOADED;
 					} else {

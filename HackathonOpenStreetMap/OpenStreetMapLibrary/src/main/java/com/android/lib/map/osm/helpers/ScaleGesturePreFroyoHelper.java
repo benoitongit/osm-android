@@ -15,7 +15,7 @@ public class ScaleGesturePreFroyoHelper {
 	private final PointF start = new PointF();
 	private final Matrix matrix = new Matrix();
 	private final Matrix savedMatrix = new Matrix();
-	private IScaleGesturePreFroyo mScaleGesture;
+	private final IScaleGesturePreFroyo mScaleGesture;
 	private float mLastZoomDist;
 	
 	public final PointF mMid = new PointF();
@@ -93,7 +93,7 @@ public class ScaleGesturePreFroyoHelper {
 			}
 			
 		} catch (IllegalArgumentException iae) {
-			
+			// Do nothing
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -102,8 +102,8 @@ public class ScaleGesturePreFroyoHelper {
 	}
 
 	public interface IScaleGesturePreFroyo {
-		public void onScaleBegin(MotionEvent event);
-		public void onScale(MotionEvent event, float startDistance, float lastDistance);
-		public void onScaleEnd(float startDistance, float lastDistance);
+		void onScaleBegin(MotionEvent event);
+		void onScale(MotionEvent event, float startDistance, float lastDistance);
+		void onScaleEnd(float startDistance, float lastDistance);
 	}
 }

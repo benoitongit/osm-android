@@ -23,14 +23,14 @@ public class PolygonUtils {
 		return isPointInsidePolygon(x, y, g.getLongitudeE6(), g.getLatitudeE6());
 	}
 
-	public static boolean isPointInsidePolygon(int X[], int Y[], int x, int y) {
+	public static boolean isPointInsidePolygon(int[] xArray, int[] yArray, int x, int y) {
 		
 		int i, j;
 		boolean c = false;
-		for (i = 0, j = X.length-2; i < X.length-1; j = i++) {
+		for (i = 0, j = xArray.length-2; i < xArray.length-1; j = i++) {
 			
-			if (( ((Y[i]<=y) && (y<Y[j])) || ((Y[j]<=y) && (y<Y[i])) ) &&
-			(x < (X[j] - X[i]) * (y - Y[i]) / (Y[j] - Y[i]) + X[i]))
+			if (( ((yArray[i]<=y) && (y<yArray[j])) || ((yArray[j]<=y) && (y<yArray[i])) ) &&
+			(x < (xArray[j] - xArray[i]) * (y - yArray[i]) / (yArray[j] - yArray[i]) + xArray[i]))
 			c = !c;
 			
 		}

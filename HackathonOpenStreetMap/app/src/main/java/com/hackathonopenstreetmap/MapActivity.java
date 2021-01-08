@@ -1,4 +1,4 @@
-package com.hackathonopenstreetmap2;
+package com.hackathonopenstreetmap;
 
 import android.app.Activity;
 import android.graphics.Canvas;

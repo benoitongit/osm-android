@@ -23,12 +23,9 @@ public class TileHandler extends Handler {
 	@Override
 	public void handleMessage(final Message msg) {
 
-		switch (msg.what) {
-
-			case TILE_LOADED:
-				if (mView != null)
-					mView.invalidate();
-				break;
+		if (msg.what == TILE_LOADED) {
+			if (mView != null)
+				mView.invalidate();
 		}
 	}
 	

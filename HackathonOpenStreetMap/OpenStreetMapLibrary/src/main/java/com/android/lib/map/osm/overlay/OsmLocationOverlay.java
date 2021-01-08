@@ -15,13 +15,14 @@ import android.view.View;
 
 public class OsmLocationOverlay extends OsmOverlay {
 	
-	private Bitmap mLocationDot;
+	private final Bitmap mLocationDot;
+	private final OsmMapViewBuilder mOsmMapViewBuilder;
+	private final Context mContext;
+	private final OsmMapView mMapView;
+
 	private Bitmap[] mArrowBitmaps;
-	private OsmMapViewBuilder mOsmMapViewBuilder;
-	private Context mContext;
 	private Location mLocation;
 	private Integer mHeading;
-	private OsmMapView mMapView;
 	
 	
 	public OsmLocationOverlay(Context c, OsmMapViewBuilder mapbuilder, OsmMapView mapView) {
@@ -48,8 +49,8 @@ public class OsmLocationOverlay extends OsmOverlay {
 				
 			} else {
 				Point center = mMapView.geopointToPixelProjection(g);
-				canvas.drawBitmap(mLocationDot, center.x - (mLocationDot.getWidth()  / 2), 
-					center.y - (mLocationDot.getHeight() / 2),  null);
+				canvas.drawBitmap(mLocationDot, center.x - (mLocationDot.getWidth()  / 2f),
+					center.y - (mLocationDot.getHeight() / 2f),  null);
 			}
 		}
 	}
@@ -83,8 +84,8 @@ public class OsmLocationOverlay extends OsmOverlay {
 	
 			// add the rotated marker to the canvas
 			canvas.drawBitmap(mArrowBitmaps[indexArrowBitmap],
-					screenPts.x - (mArrowBitmaps[indexArrowBitmap].getWidth() / 2), screenPts.y
-							- (mArrowBitmaps[indexArrowBitmap].getHeight() / 2), null);
+					screenPts.x - (mArrowBitmaps[indexArrowBitmap].getWidth() / 2f), screenPts.y
+							- (mArrowBitmaps[indexArrowBitmap].getHeight() / 2f), null);
 
 		} catch (Exception e) {
 			e.printStackTrace();

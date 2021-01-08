@@ -19,7 +19,7 @@ public class TilesDownloader {
 	public static List<Tile> getTilesForBoundaryBox(int mapTypeId, int minZoom, int maxZoom, final double north, final double south, 
 			final double east, final double west) {
 		
-		List<Tile> tiles = new ArrayList<Tile>();
+		List<Tile> tiles = new ArrayList<>();
 		
 		for(int z = minZoom; z <= maxZoom; z++){
             final Tile upperLeft = Projection.getMapTileFromCoordinates(north, west, z);

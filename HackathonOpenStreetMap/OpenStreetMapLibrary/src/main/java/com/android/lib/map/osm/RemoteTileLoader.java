@@ -8,9 +8,9 @@ import android.os.Message;
 
 public class RemoteTileLoader extends Thread {
 		
-	private RequestsQueue mRequestsQueue;
-	private Handler mHandler;
-	private RequestTile mRequestTile;
+	private final RequestsQueue mRequestsQueue;
+	private final Handler mHandler;
+	private final RequestTile mRequestTile;
 	
 
 	public RemoteTileLoader(Handler handler, int tileStackSizeLimit) {
@@ -41,7 +41,7 @@ public class RemoteTileLoader extends Thread {
 			addTile(tile, bitmapData);
 			return true;
 		} catch (Exception e) {
-
+			// Do nothing
 		}
 		return false;
 	}

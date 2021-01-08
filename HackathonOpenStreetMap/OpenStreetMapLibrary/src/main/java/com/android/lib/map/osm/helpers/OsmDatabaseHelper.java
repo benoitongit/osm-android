@@ -16,9 +16,9 @@ public class OsmDatabaseHelper extends CustomDatabaseHelper {
 		return false;
 	}
 	
-	public boolean openDatabase(Context context) {
+	public boolean openDatabase() {
 		if (mDbFile.exists())
-			return super.openDatabase(context, mDbFile);
+			return super.openDatabase(mDbFile);
 		
 		return false;
 	}

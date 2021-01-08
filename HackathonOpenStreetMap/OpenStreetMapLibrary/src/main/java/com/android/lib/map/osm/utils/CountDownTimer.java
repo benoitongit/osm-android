@@ -5,7 +5,7 @@ import android.os.Handler;
 public abstract class CountDownTimer {
 	
     private long millisInFuture;
-    private long countDownInterval;
+    private final long countDownInterval;
     private boolean cancelled;
     
     public abstract void onFinish();
