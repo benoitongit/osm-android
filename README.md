@@ -1,14 +1,13 @@
-# tile
+# OSM Android
 
-Tile is a free Android map library using OpenStreetMap tiles.
+OSM Android is a free Android map library using OpenStreetMap https.
 
-![alt text](https://github.com/benoitongit/tile/blob/main/map_screenshot.jpg?raw=true)
+![alt text](https://github.com/benoitongit/osm-android/blob/main/map_screenshot.jpg?raw=true)
 
 ## Features
 
-* Works offline, tiles are saved in a local sqlite database
-* Show current location
-* Overlays
+* Works offline, tiles are cached in a local SQLite database
+* Add/remove Overlays
   * markers
   * tracks
   * polygons
@@ -17,7 +16,7 @@ Tile is a free Android map library using OpenStreetMap tiles.
 
 Tile works on Android X.X+ (API level XX+) and on Java X+.
 
-## Gettting started
+## Getting started
 
 ### Manifest
 
@@ -43,18 +42,24 @@ private OsmMapView mapView;
 public void onCreate(Bundle savedInstanceState) {
   super.onCreate(savedInstanceState);
 
-  OsmMapView.OsmMapViewBuilder mapBuilder = new OsmMapView.OsmMapViewBuilder();
-  mapBuilder.setIsNetworkRequestAllowed(true);
-  mapView = new OsmMapView(getApplicationContext(), mapBuilder, this);
+  OsmMapView.OsmMapViewConfig mapConfig = new OsmMapView.OsmMapViewConfig();
+  mapConfig.setIsNetworkRequestAllowed(true);
+  mapView = new OsmMapView(getApplicationContext(), mapConfig, this);
 
   ViewGroup mapLayout = (ViewGroup) findViewById(R.id.mapLayout);
   RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.FILL_PARENT,
-				ViewGroup.LayoutParams.FILL_PARENT);
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
   mapLayout.addView(mapView, layoutParams);
 
   mapView.setCenter(37.7793, -122.4192);
   mapView.setZoom(12); 
+}
+
+@Override
+protected void onDestroy() {
+    mapView.clear();
+    super.onDestroy();
 }
 ```
 
@@ -62,9 +67,9 @@ public void onCreate(Bundle savedInstanceState) {
 
 **How to add the position indicator**
 ```
-OsmMapView.OsmMapViewBuilder mapBuilder = new OsmMapView.OsmMapViewBuilder();
-mapBuilder.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
-OsmLocationOverlay overlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mapView);
+OsmMapView.OsmMapViewConfig mapConfig = new OsmMapView.OsmMapViewConfig();
+mapConfig.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
+OsmLocationOverlay overlay = new OsmLocationOverlay(getApplicationContext(), mapConfig, mapView);
 mapView.addOverlay(overlay);
 ```
 
@@ -93,11 +98,13 @@ paint.setStyle(Paint.Style.STROKE);
 paint.setStrokeJoin(Paint.Join.ROUND);
 paint.setStrokeCap(Paint.Cap.ROUND);
 paint.setStrokeWidth(8);
-
 mapTrack.setPaint(paint);
+
+// Add track coordinates
 List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
 geoPoints.add(new GeoPoint(37.792260, -122.403490));
 geoPoints.add(new GeoPoint(41.888650, -87.627460));
+
 mapTrack.setTrack(geoPoints); 
 trackOverlay.addTrack(mapTrack);
 mapView.addOverlay(trackOverlay);
@@ -135,3 +142,10 @@ mapPolygon.setPolygon(geoPoints);
 overlay.addPolygon(mapPolygon);
 mapView.addOverlay(overlay);
 ```
+
+## Feature Roadmap
+* Show current location
+* Support infinite world map scroll
+* Support .svg marker
+* Add ability to download a map area for offline usage
+* Add zoom in/out buttons

@@ -20,7 +20,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Layer to add/remove {@link MapMarker}
+ */
 public class OsmMarkerOverlay extends OsmOverlay {
 		
 	private final List<MapMarker> mMarkers = new ArrayList<MapMarker>();
@@ -139,7 +141,7 @@ public class OsmMarkerOverlay extends OsmOverlay {
 		
 		try {
 	
-			IMapInteractionListener mapListener = mOsmMapView.getMapIntereractionListener();
+			IMapInteractionListener mapListener = mOsmMapView.getMapInteractionListener();
 			
 			Iterator<MapMarker> it = mMarkers.iterator();
 			

@@ -13,6 +13,9 @@ import android.view.View;
 import com.android.lib.map.osm.GeoPoint;
 import com.android.lib.map.osm.OsmMapView;
 
+/**
+ * Layer to add/remove {@link MapPolygon}
+ */
 public class OsmPolygonOverlay extends OsmOverlay {
 
 	private final OsmMapView mMapView;

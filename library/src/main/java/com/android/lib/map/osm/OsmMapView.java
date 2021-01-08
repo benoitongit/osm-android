@@ -24,7 +24,10 @@ import com.android.lib.map.osm.overlay.OsmPolygonOverlay;
 import com.android.lib.map.osm.overlay.OsmTrackOverlay;
 import com.android.lib.map.osm.utils.CountDownTimer;
 
-
+/**
+ * A View which displays a map (with data obtained from the OpenStreetMap service).
+ * When focused, it will capture touch gestures to move the map.
+ */
 public class OsmMapView extends OsmMapViewBase {
 	
 	private final IMapInteractionListener mMapInteractionListener;
@@ -48,18 +51,18 @@ public class OsmMapView extends OsmMapViewBase {
 	private float mAnimationOffsetBottom;
 	
 	
-	public OsmMapView(Context context, OsmMapViewBuilder mapbuilder, IMapInteractionListener mapInteractionListener) {
-		super(context, mapbuilder.getMapTypeId());
+	public OsmMapView(Context context, OsmMapViewConfig config, IMapInteractionListener mapInteractionListener) {
+		super(context, config.getMapTypeId());
 		
 		mMapOverlays = getOverlays();
 		mMapOverlays.clear();
-		setBackgroundColor(mapbuilder.getBackgrounColor()); // Map tile background color before loading tiles 
+		setBackgroundColor(config.getBackgrounColor()); // Map tile background color before loading tiles
 
 		mScaleGesture = new ScaleGestureHelper(context, new MySimpleOnScaleGestureListener());
 		
-		setMapTileUnavailableBitmap(mapbuilder.getMapTileUnavailableBitmap());
+		setMapTileUnavailableBitmap(config.getMapTileUnavailableBitmap());
 		
-		startTileThreads(mapbuilder.getIsNetworkRequestAllowed());
+		startTileThreads(config.getIsNetworkRequestAllowed());
 		mTrackOverlay = new OsmTrackOverlay(this);
 		mPolygonOverlay = new OsmPolygonOverlay(this);
 		mTrackStartEndMarkerOverlay = new OsmMarkerOverlay(this, null);
@@ -72,22 +75,30 @@ public class OsmMapView extends OsmMapViewBase {
 		mMapInteractionListener = mapInteractionListener;
 		mDetector = new GestureDetector(context, this);
 	}
-	
+
+	/**
+	 * Adds a marker to this map.
+	 * @param marker A marker object that defines how to render the marker.
+	 */
 	public void addMarker(MapMarker marker) {
 
 		mMarkerOverlay.addMarker(marker);
 		invalidate();
 	}
 
+	/**
+	 * Adds a list of markers to this map.
+	 * @param markers A list of marker objects.
+	 */
 	public void addMarkers(List<? extends MapMarker> markers) {
 		mMarkerOverlay.addMarkers(markers);
 		invalidate();
 	}
-	
+
 	public void addMarkersFadeIn(List<? extends MapMarker> markers) {
 		mMarkerOverlay.addMarkersFadeIn(markers);
 	}
-	
+
 	public void removeMarkers(List<? extends MapMarker> markers) {
 		mMarkerOverlay.removeMarkers(markers);
 		invalidate();
@@ -96,22 +107,35 @@ public class OsmMapView extends OsmMapViewBase {
 	public void removeMarkersFadeOut(List<? extends MapMarker> markers) {
 		mMarkerOverlay.removeMarkersFadeOut(markers);
 	}
-	
+
+	/**
+	 * Remove all markers from this map.
+	 */
 	public void removeMarkers() {
 		mMarkerOverlay.removeMarkers();
 		invalidate();
 	}
-	
+
+	/**
+	 * Removes a given marker from this map.
+	 */
 	public void removeMarker(MapMarker marker) {
 		mMarkerOverlay.removeMarker(marker);
 		invalidate();
 	}
-	
+
+	/**
+	 * Adds an overlay to this map.
+	 * @param overlay A overlay object that defines the type of overlay: Polygon, Track or Marker.
+	 */
 	public void addOverlay(OsmOverlay overlay) {
 		mMapOverlays.add(overlay);
 		invalidate();
 	}
 
+	/**
+	 * Removes a given overlay from this map.
+	 */
 	public void removeOverlay(OsmOverlay overlay) {
 		mMapOverlays.remove(overlay);
 		invalidate();
@@ -126,7 +150,7 @@ public class OsmMapView extends OsmMapViewBase {
 		return mMarkerOverlay.getMarkers();
 	}
 	
-	public IMapInteractionListener getMapIntereractionListener() {
+	public IMapInteractionListener getMapInteractionListener() {
 		return mMapInteractionListener;
 	}
 
@@ -624,7 +648,7 @@ public class OsmMapView extends OsmMapViewBase {
 
 	}
 
-	public static class OsmMapViewBuilder {
+	public static class OsmMapViewConfig {
 		
 		private int mBackgrounColor = Color.parseColor("#FFDADBD7");
 		private Bitmap mMapTileUnavailableBitmap = null;

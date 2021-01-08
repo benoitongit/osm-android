@@ -2,7 +2,7 @@ package com.android.lib.map.osm.overlay;
 
 import com.android.lib.map.osm.GeoPoint;
 import com.android.lib.map.osm.OsmMapView;
-import com.android.lib.map.osm.OsmMapView.OsmMapViewBuilder;
+import com.android.lib.map.osm.OsmMapView.OsmMapViewConfig;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +16,7 @@ import android.view.View;
 public class OsmLocationOverlay extends OsmOverlay {
 	
 	private final Bitmap mLocationDot;
-	private final OsmMapViewBuilder mOsmMapViewBuilder;
+	private final OsmMapViewConfig mOsmMapViewBuilder;
 	private final Context mContext;
 	private final OsmMapView mMapView;
 
@@ -25,9 +25,9 @@ public class OsmLocationOverlay extends OsmOverlay {
 	private Integer mHeading;
 	
 	
-	public OsmLocationOverlay(Context c, OsmMapViewBuilder mapbuilder, OsmMapView mapView) {
-		mLocationDot = BitmapFactory.decodeResource(c.getResources(), mapbuilder.getPositionIndicatorDrawableId());
-		mOsmMapViewBuilder = mapbuilder;
+	public OsmLocationOverlay(Context c, OsmMapViewConfig mapOption, OsmMapView mapView) {
+		mLocationDot = BitmapFactory.decodeResource(c.getResources(), mapOption.getPositionIndicatorDrawableId());
+		mOsmMapViewBuilder = mapOption;
 		mContext = c;
 		mMapView = mapView;
 		initHeadingArrow();

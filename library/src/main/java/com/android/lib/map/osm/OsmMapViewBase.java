@@ -154,7 +154,13 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 
 		invalidate();
 	}
-	
+
+
+	/**
+	 * Repositions the camera according to the latitude longitude
+	 * @param lat latitude
+	 * @param lon longitude
+	 */
 	public void setCenter(double lat, double lon) {
 
 	    int screenWidth = getWidth();
@@ -412,6 +418,10 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 		}
 	}
 
+	/**
+	 * Moves the camera viewpoint to a particular zoom level.
+	 * @param zoomLevel zoom Level, between 0 and MAX_ZOOM_LEVEL
+	 */
 	public int setZoom(int zoomLevel) {
 			
 		if (zoomLevel > MAX_ZOOM_LEVEL)
@@ -435,6 +445,10 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 		
 		onZoomLevelChanges();
 	}
+
+	/**
+	 * Moves the viewpoint's height closer to the Earth's surface. Zoom increment is 1.0.
+	 */
 	public void zoomIn() {
 		setOffsetX((getOffsetX()) * 2 - (getWidth() / 2));
 		setOffsetY((getOffsetY()) * 2 -(getHeight() / 2));
@@ -442,6 +456,9 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 		onZoomLevelChanges();
 	}
 
+	/**
+	 * Moves the viewpoint's height farther away from the Earth's surface. Zoom increment is -1.0.
+	 */
 	public void zoomOut() {
 		setOffsetX(getOffsetX() / 2 + (getWidth() / 4));
 		setOffsetY(getOffsetY() / 2 + (getHeight() / 4));

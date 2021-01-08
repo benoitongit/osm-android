@@ -58,7 +58,6 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         initOsmDatabase();
 
         initMap();
-
     }
 
     @Override
@@ -82,14 +81,14 @@ public class MapActivity extends Activity implements IMapInteractionListener,
     }
 
     private void initMap() {
-        OsmMapView.OsmMapViewBuilder mapBuilder = new OsmMapView.OsmMapViewBuilder();
+        OsmMapView.OsmMapViewConfig mapConfig = new OsmMapView.OsmMapViewConfig();
 
-        mapBuilder.setIsNetworkRequestAllowed(true);
-        mapBuilder.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
+        mapConfig.setIsNetworkRequestAllowed(true);
+        mapConfig.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
 
-        mOsmMapView = new OsmMapView(getApplicationContext(), mapBuilder, this);
+        mOsmMapView = new OsmMapView(getApplicationContext(), mapConfig, this);
 
-        mOsmLocationOverlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mOsmMapView);
+        mOsmLocationOverlay = new OsmLocationOverlay(getApplicationContext(), mapConfig, mOsmMapView);
 
         mOsmMapView.addOverlay(mOsmLocationOverlay);
         addTrack();
@@ -102,7 +101,7 @@ public class MapActivity extends Activity implements IMapInteractionListener,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         mapLayout.addView(mOsmMapView, layoutParams);
 
-        mOsmMapView.setCenter(37.7793, -122.4192);
+        mOsmMapView.setCenter(40.041284, -103.715057);
         mOsmMapView.setZoom(4);
     }
 
@@ -126,13 +125,13 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         OsmMarkerOverlay markerOverlay = new OsmMarkerOverlay(mOsmMapView, drawable);
         // SF office
         addMarker(new GeoPoint(37.792260, -122.403490), markerOverlay);
-        // Chicago SF office
+        // Chicago office
         addMarker(new GeoPoint(41.888650, -87.627460), markerOverlay);
-        // LA SF office
+        // LA office
         addMarker(new GeoPoint(34.057330, -118.417170), markerOverlay);
-        // NYC SF office
+        // NYC office
         addMarker(new GeoPoint(40.754080, -73.988820), markerOverlay);
-        // Beijing SF office
+        // Beijing office
         addMarker(new GeoPoint(40.009477, 116.461179), markerOverlay);
         mOsmMapView.addOverlay(markerOverlay);
     }

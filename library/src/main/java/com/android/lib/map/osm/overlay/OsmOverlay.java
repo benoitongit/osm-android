@@ -3,6 +3,11 @@ package com.android.lib.map.osm.overlay;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * A map layer
+ * An overlay can do different things, like show markers, polygons and tracks.
+ * Children include {@link OsmMarkerOverlay} {@link OsmPolygonOverlay} {@link OsmTrackOverlay}
+ */
 public abstract class OsmOverlay {
 
 	
