@@ -1,4 +1,4 @@
-package com.hackathonopenstreetmap;
+package com.demo;
 
 import android.Manifest;
 
