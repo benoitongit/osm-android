@@ -1,9 +1,5 @@
 package com.android.lib.map.osm;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,8 +10,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-
 import com.android.lib.map.osm.overlay.OsmOverlay;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class OsmMapViewBase extends SurfaceView implements android.view.GestureDetector.OnGestureListener, OnDoubleTapListener  {
 
@@ -39,13 +36,13 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 
 	private int[] mIncrementsX;
 	private int[] mIncrementsY;
-	private Animation mZoomInAnimation;
-	private Animation mZoomOutAnimation;
+	private final Animation mZoomInAnimation;
+	private final Animation mZoomOutAnimation;
 	private Animation mZoomInDoubleTapAnimation;
 	private TilesProvider mTilesProvider;
-	private List<OsmOverlay> mOverlays;
-	private int mMaptTypeId;
-	private TileHandler mHandler;
+	private final List<OsmOverlay> mOverlays;
+	private final int mMaptTypeId;
+	private final TileHandler mHandler;
 	private GeoPoint setMapCenterWhenViewSizeChange;
 	protected boolean mIsDoubleTap = false;
 	private Bitmap mMapTileUnavailableBitmap = null;
@@ -70,7 +67,7 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 				Animation.RELATIVE_TO_SELF, 0.5f);
 		mZoomOutAnimation.setDuration(400L);
 		
-		mOverlays = new ArrayList<OsmOverlay>();
+		mOverlays = new ArrayList<>();
 		mMaptTypeId = mapTypeId;
 		
 		mHandler = new TileHandler(this);
@@ -136,9 +133,8 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 				
 	    int offsetX = mOffsetX - (getWidth() / 2);
 	    int offsetY = mOffsetY - (getHeight() / 2);
-			    
-	    GeoPoint g =  getProjectionFromPixels(offsetX, offsetY);
-	    return g;
+
+	    return getProjectionFromPixels(offsetX, offsetY);
 	}
 	
 	public GeoPoint getProjectionFromPixels(int x, int y) {
@@ -255,7 +251,7 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 	}
 	
 	public void startTileThreads(boolean allowTileRequestViaHttp) {
-		mTilesProvider = new TilesProvider(this.getContext(), mHandler, allowTileRequestViaHttp);
+		mTilesProvider = new TilesProvider(mHandler, allowTileRequestViaHttp);
 	}
 	
 	private int getMaxOffsetX() {
@@ -335,12 +331,9 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 	}
 
 	private boolean isSane(Tile tile) {
-		if (tile.mapX >= 0 && tile.mapY >= 0
+		return tile.mapX >= 0 && tile.mapY >= 0
 				&& tile.mapX <= (Math.pow(2, mZoomLevel) - 1)
-				&& tile.mapY <= (Math.pow(2, mZoomLevel) - 1)) {
-			return true;
-		}
-		return false;
+				&& tile.mapY <= (Math.pow(2, mZoomLevel) - 1);
 	}
 
 	@Override
@@ -416,8 +409,6 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 				this.mOffsetY = offsetY;
 			}
 			initializeCurrentTiles(mZoomLevel, this.mOffsetX, this.mOffsetY);
-			
-			//Log.i("setOffsetY", "OffsetY= " + mOffsetY);
 		}
 	}
 
@@ -440,7 +431,6 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 	private void zoomInForDoubleTap() {
 		setOffsetX((getOffsetX()) * 2 - this.mTouchDownX);
 		setOffsetY((getOffsetY()) * 2 - this.mTouchDownY);
-//		mTilesProvider.clearResizeCache();
 		mIsDoubleTap=false;
 		
 		onZoomLevelChanges();
@@ -448,7 +438,6 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 	public void zoomIn() {
 		setOffsetX((getOffsetX()) * 2 - (getWidth() / 2));
 		setOffsetY((getOffsetY()) * 2 -(getHeight() / 2));
-//		mTilesProvider.clearResizeCache();
 		
 		onZoomLevelChanges();
 	}
@@ -456,13 +445,8 @@ public abstract class OsmMapViewBase extends SurfaceView implements android.view
 	public void zoomOut() {
 		setOffsetX(getOffsetX() / 2 + (getWidth() / 4));
 		setOffsetY(getOffsetY() / 2 + (getHeight() / 4));
-//		mTilesProvider.clearResizeCache();
 		
 		onZoomLevelChanges();
-	}
-	
-	public class Tiles extends Vector<Tile> {
-		private static final long serialVersionUID = -6468659912600523042L;
 	}
 
 	@Override

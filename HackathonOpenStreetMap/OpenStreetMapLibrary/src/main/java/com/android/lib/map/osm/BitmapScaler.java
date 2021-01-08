@@ -9,37 +9,10 @@ import java.io.PipedOutputStream;
 
 public class BitmapScaler {
 	
-//	public static Bitmap scaleTo(Bitmap bitmap, int offsetX, int offsetY,float scaleFactor, int newWidth, int newHeight) {
-//        
-//		if (bitmap == null)
-//			return bitmap;
-//		
-//		int width = bitmap.getWidth();
-//        int height = bitmap.getHeight();
-//
-//        try {
-//        	
-//			Bitmap resizedBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.RGB_565);
-//			Rect src = new Rect(0, 0, width, height);
-//			Rect dest = new Rect(0, 0, newWidth, newHeight);
-//			Canvas c = new Canvas(resizedBitmap);
-//			c.drawBitmap(bitmap, src, dest, null);
-//        	
-//        	return resizedBitmap;
-//        
-//        } catch (OutOfMemoryError e) {
-//        	e.printStackTrace();
-//        } catch (Exception e) {
-//        	e.printStackTrace();
-//        }
-//        
-//		return null;
-//	}
-	
 	public static Bitmap scaleTo(Bitmap bitmap, float scaleFactor, int xIncrement, int yIncrement) {
 		
 		if (bitmap == null)
-			return bitmap;
+			return null;
 				
         try {
     		
@@ -56,8 +29,6 @@ public class BitmapScaler {
         	
         	return resizedBitmap;
         
-        } catch (OutOfMemoryError e) {
-        	e.printStackTrace();
         } catch (Exception e) {
         	e.printStackTrace();
         }

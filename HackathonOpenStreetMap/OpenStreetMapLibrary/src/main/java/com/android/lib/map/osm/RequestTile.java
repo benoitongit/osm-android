@@ -18,8 +18,8 @@ public class RequestTile {
 	
 	private static final int IO_BUFFER_SIZE = 8192;
 	
-	private OsmBasePool mOsmBasePool = new OsmBasePool();
-	private byte[] mBuffer;
+	private final OsmBasePool mOsmBasePool = new OsmBasePool();
+	private final byte[] mBuffer;
 	
 	
 	public RequestTile() {
@@ -30,9 +30,9 @@ public class RequestTile {
 		
 		String tileUrl = mOsmBasePool.getNextBase() + tile.key;
 		
-		InputStream in = null;
-		OutputStream out = null;
-		ByteArrayOutputStream dataStream = null;
+		InputStream in;
+		OutputStream out;
+		ByteArrayOutputStream dataStream;
 
 		try {
 			URL urL = new URL(tileUrl);
@@ -68,8 +68,8 @@ public class RequestTile {
 		}
 	}
 	
-	class OsmBasePool {
-		private Vector<String> bases = new Vector<String>();
+	private static class OsmBasePool {
+		private final Vector<String> bases = new Vector<>();
 		private int iterator = 0;
 
 		OsmBasePool() {

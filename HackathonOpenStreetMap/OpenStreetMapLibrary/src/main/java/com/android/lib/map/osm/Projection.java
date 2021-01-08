@@ -8,8 +8,7 @@ public class Projection {
 	private final static double MAX_Y = 20037508.342789244;
 	
 	public static double getMapSize(int zoomLevel) {
-		double mapSize = (Math.pow(2, zoomLevel) * Tile.TILE_SIZE);
-		return mapSize;
+		return (Math.pow(2, zoomLevel) * Tile.TILE_SIZE);
 	}
 	
 	public static int getXPixelFromLongitude(double lon, int zoomLevel) {
@@ -108,7 +107,6 @@ public class Projection {
 		final int y = (int) Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * (1 << zoom));
 		final int x = (int) Math.floor((lon + 180) / 360 * (1 << zoom));
 
-		Tile tile = new Tile(x, y, zoom);
-		return tile;
+		return new Tile(x, y, zoom);
 	}
 }

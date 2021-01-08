@@ -19,6 +19,8 @@ import android.util.Log;
 
 public class MapTile extends OsmModel {
 
+	private static final String TAG = MapTile.class.getSimpleName();
+
 	public final static String SQL_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final String TABLE_TILE_NAME = "tiles";
 	
@@ -42,14 +44,16 @@ public class MapTile extends OsmModel {
 		
 		try {
 
-			String tileSql = new String();
+			StringBuilder tileSqlBuilder = new StringBuilder();
 			for (Tile tile : tiles) {
-				if (tileSql.length() > 0)
-					tileSql += " OR ";
-				tileSql += "(" + getOsmTileSQLRequest(tile.mapY, tile.mapX, tile.zoom) + ")";
+				if (tileSqlBuilder.length() > 0)
+					tileSqlBuilder.append(" OR ");
+				tileSqlBuilder.append("(")
+						.append(getOsmTileSQLRequest(tile.mapY, tile.mapX, tile.zoom))
+						.append(")");
 			}
 			
-			Cursor c = mDbHelper.get(TABLE_TILE_NAME, tileSql, columnsSelected, null, tiles.size()+""); 
+			Cursor c = mDbHelper.get(TABLE_TILE_NAME, tileSqlBuilder.toString(), columnsSelected, null, tiles.size()+"");
 			
 			while (c.moveToNext()) {
 			
@@ -72,9 +76,6 @@ public class MapTile extends OsmModel {
 			}
 			
 			c.close();
-			
-		} catch (OutOfMemoryError e) {
-			e.printStackTrace();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -87,7 +88,7 @@ public class MapTile extends OsmModel {
 		Bitmap tileBitmap = null;
 				
 		if (mDbHelper == null)
-			return tileBitmap;
+			return null;
 		
 		try {
 
@@ -106,13 +107,9 @@ public class MapTile extends OsmModel {
 			}
 			c.close();
 			
-		} catch (OutOfMemoryError e) {
-			e.printStackTrace();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-
-		//Log.i("getTile", "get tile from DB    tile = " + tile.mapX+tile.mapY+tile.zoom );
 		
 		return tileBitmap;
 	}
@@ -131,8 +128,6 @@ public class MapTile extends OsmModel {
 		if (c.moveToNext()) {
 			try {
 				mMapMinZoomLevel = Integer.parseInt(c.getString(0));
-			} catch (OutOfMemoryError e) {
-				e.printStackTrace();
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -143,9 +138,7 @@ public class MapTile extends OsmModel {
 	}
 	
 	public static boolean hasTile(Tile tile) {
-		if (getTileId(tile) != null)
-			return true;
-		return false;
+		return getTileId(tile) != null;
 	}
 	
 	public static String getTileId(Tile tile) {
@@ -154,7 +147,7 @@ public class MapTile extends OsmModel {
 		
 		OsmDatabaseHelper osmDb = mDbHelper;		
 		if (osmDb == null)
-			return tileId;
+			return null;
 		
 		Cursor c = osmDb.get(TABLE_TILE_NAME, 
 				getOsmTileSQLRequest(tile.mapY, tile.mapX, tile.zoom),
@@ -282,7 +275,7 @@ public class MapTile extends OsmModel {
 				
 				c.close();
 				
-				Log.i("deleteTilesAboveLimitThread", "deleteTilesAboveLimitThread time =" + (Calendar.getInstance().getTimeInMillis() - time) + "ms");
+				Log.i(TAG, "deleteTilesAboveLimitThread time =" + (Calendar.getInstance().getTimeInMillis() - time) + "ms");
 			}
 		};
 		t.start();
@@ -300,7 +293,7 @@ public class MapTile extends OsmModel {
 	}
 
 	public static int[] getMinMaxZoomLevelForTiles(List<Tile> tiles) {
-		int minMaxZoom[] = new int[2];
+		int[] minMaxZoom = new int[2];
 		minMaxZoom[0] = 18;
 		minMaxZoom[1] = 0;
 		for (Tile tile : tiles) {

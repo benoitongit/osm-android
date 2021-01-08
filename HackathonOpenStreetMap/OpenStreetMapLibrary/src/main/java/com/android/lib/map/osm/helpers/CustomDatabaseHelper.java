@@ -18,23 +18,12 @@ public class CustomDatabaseHelper {
 		
 	public SQLiteDatabase mDb;
 
-	//private boolean mAlreadyTriedToOpenDb;
-	protected Context mContext;
-	
-	
-	public CustomDatabaseHelper(Context context) {
-		//mAlreadyTriedToOpenDb = false;
-		mContext = context;
-	}
-
-	public boolean openDatabase(Context context, File dbFile) {
+	public boolean openDatabase(File dbFile) {
 		
 		try {
-
 			Log.i("SQLiteHelper", "Opening database at " + dbFile);
 			mDb = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 			return true;
-				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,21 +38,13 @@ public class CustomDatabaseHelper {
 			if (dbFile.exists()) {
 				Log.i("SQLiteHelper", "Opening database at " + dbFile);
 				mDb = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
-				return true;
-				
-				// Test if DB works properly
-				//get(MapTile.TABLE_TILE_NAME, "tilekey");
-				//---
-				
-				//if (DATABASE_VERSION > db.getVersion())
-					//upgrade();
 			} else {
 				Log.i("SQLiteHelper", "Creating database at " + dbFile);
 				mDb = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
 				Log.i("SQLiteHelper", "Opened database at " + dbFile);
-				upgradeFromFile(mDb, R.raw.sql_osm_maptile);
-				return true;
+				upgradeFromFile(context, mDb, R.raw.sql_osm_maptile);
 			}
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,11 +52,11 @@ public class CustomDatabaseHelper {
 		return false;
 	}
 
-	private void upgradeFromFile(SQLiteDatabase db, int ressourceId) {
+	private void upgradeFromFile(Context context, SQLiteDatabase db, int ressourceId) {
 		InputStream sqlFile = null;
 		
 		try {
-			sqlFile = mContext.getResources().openRawResource(ressourceId);
+			sqlFile = context.getResources().openRawResource(ressourceId);
 		} catch (Resources.NotFoundException e) {
 			e.printStackTrace();
 			return;
@@ -88,9 +69,8 @@ public class CustomDatabaseHelper {
 			while ((line = br.readLine()) != null) {
 				db.execSQL(line);
 			}
-		} catch (SQLException se) {
-		} catch (IOException e) {
-		}	
+		} catch (SQLException | IOException se) {
+		}
 	}
 	
 	public void close() {

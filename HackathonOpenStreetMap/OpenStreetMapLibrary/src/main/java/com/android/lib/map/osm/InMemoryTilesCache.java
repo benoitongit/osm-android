@@ -1,16 +1,10 @@
 package com.android.lib.map.osm;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Handler;
 
 public class InMemoryTilesCache {
-	private LRUMap<String, Bitmap> mBitmapCache = new LRUMap<String, Bitmap>(8, 8);
-	private Object mLock = new Object();
-
-	public InMemoryTilesCache(Context context, Handler handler) {
-
-	}
+	private LRUMap<String, Bitmap> mBitmapCache = new LRUMap<>(8, 8);
+	private final Object mLock = new Object();
 
 	public void add(String tileKey, Bitmap bitmap) {
 		synchronized (mLock) {
@@ -36,6 +30,6 @@ public class InMemoryTilesCache {
 		}
 	}
 	public void setBitmapCacheSize(int size){
-		mBitmapCache = new LRUMap<String, Bitmap>(size, size+2);
+		mBitmapCache = new LRUMap<>(size, size+2);
 	}
 }

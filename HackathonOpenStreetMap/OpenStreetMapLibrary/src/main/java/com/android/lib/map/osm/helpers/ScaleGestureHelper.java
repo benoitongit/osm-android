@@ -7,10 +7,9 @@ import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 
 public class ScaleGestureHelper  {
 
-	private ScaleGestureDetector mScaleGestureDetector;
-	private IScaleGestureListener mListener;
-	
-	
+	private final ScaleGestureDetector mScaleGestureDetector;
+	private final IScaleGestureListener mListener;
+
 	public ScaleGestureHelper(Context context, IScaleGestureListener listener) {
 		mListener = listener;
 		mScaleGestureDetector = new ScaleGestureDetector(context, new MySimpleOnScaleGestureListener());
@@ -39,7 +38,7 @@ public class ScaleGestureHelper  {
 	}
 	
 	public interface IScaleGestureListener {
-		public void onScale(float distance);
-		public void onScaleEnd();
+		void onScale(float distance);
+		void onScaleEnd();
 	}
 }

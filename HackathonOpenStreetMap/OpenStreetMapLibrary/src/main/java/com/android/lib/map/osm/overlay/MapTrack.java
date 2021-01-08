@@ -13,7 +13,7 @@ public class MapTrack {
 	private MapMarker mTrackStartMarker;
 	private MapMarker mTrackEndMarker;
 	private Paint mPaint;
-	private Path mPath;
+	private final Path mPath;
 	
 	public MapTrack() {
 		mPath = new Path();

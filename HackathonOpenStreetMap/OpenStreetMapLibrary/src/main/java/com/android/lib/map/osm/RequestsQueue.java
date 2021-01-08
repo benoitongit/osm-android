@@ -1,15 +1,12 @@
-/**
- * 
- */
 package com.android.lib.map.osm;
 
 import java.util.Stack;
 
 public class RequestsQueue {
 	
-	private int mTileStackSizeLimit;
-	private Stack<Tile> queue = new Stack<Tile>();
-	private Object lock = new Object();
+	private final int mTileStackSizeLimit;
+	private final Stack<Tile> queue = new Stack<>();
+	private final Object lock = new Object();
 	int id;
 
 	RequestsQueue(int id, int tileStackSizeLimit)

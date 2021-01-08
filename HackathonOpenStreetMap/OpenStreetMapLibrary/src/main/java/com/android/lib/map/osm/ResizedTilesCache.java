@@ -11,13 +11,14 @@ import com.android.lib.map.osm.models.MapTile;
 public class ResizedTilesCache extends Thread {
 
 
-	private static int MAX_SCALE_FACTOR = 8;
-	private LRUMap<String, Bitmap> mExtrapolatedBitmapCache = new LRUMap<String, Bitmap>(8,8);
-	private Queue<Tile> mRequests = new LinkedList<Tile>();
+	private static final int MAX_SCALE_FACTOR = 8;
+
+	private LRUMap<String, Bitmap> mExtrapolatedBitmapCache = new LRUMap<>(8,8);
+	private final Queue<Tile> mRequests = new LinkedList<>();
 	private Tile mResizeTile;
-	private TileScaler mTileScaler = new TileScaler();
-	private Object mLock = new Object();
-	private Handler mHandler;
+	private final TileScaler mTileScaler = new TileScaler();
+	private final Object mLock = new Object();
+	private final Handler mHandler;
 	private Bitmap mMapTileUnavailableBitmap=null;
 	
 	public ResizedTilesCache(Handler handler) {
@@ -25,21 +26,13 @@ public class ResizedTilesCache extends Thread {
 		start();
 	}
 	public void setBitmapCacheSize(int size){
-		mExtrapolatedBitmapCache =  new LRUMap<String, Bitmap>(size,size+2);
+		mExtrapolatedBitmapCache =  new LRUMap<>(size,size+2);
 	}
 	public void setMapTileUnavailableBitmap(Bitmap bitmap){
 		mMapTileUnavailableBitmap = bitmap;
 	}
 	public Tile findClosestMinusTile(Tile tile) {
-		Tile minusZoomTile = generateMinusZoomTile(tile);
-
-		//Log.i("findClosestCachedMinusTile", "LOOKING FOR zoom=" + tile.zoom + " mapX=" + tile.mapX + " mapY=" + tile.mapY);
-		//Log.i("findClosestCachedMinusTile", "MinusTile LOOKING FOR zoom=" + minusZoomTile.zoom + " mapX=" + minusZoomTile.mapX + " mapY=" + minusZoomTile.mapY);
-		
-		if (minusZoomTile != null) {
-			return minusZoomTile;
-		}
-		return null;
+		return generateMinusZoomTile(tile);
 	}
 
 	private Tile generateMinusZoomTile(Tile tile) {
@@ -78,7 +71,7 @@ public class ResizedTilesCache extends Thread {
 		{
     		for(Tile request : mRequests)
     		{
-    			if(request.key == resizeRequest.key)
+    			if(request.key.equals(resizeRequest.key))
     			{
     				return true;
     			}
@@ -181,19 +174,18 @@ public class ResizedTilesCache extends Thread {
 	}
 	
 	
-	class TileScaler {
+	private static class TileScaler {
 		
 		public Bitmap scale(Bitmap minusZoomBitmap, Tile minusZoomTile, int mapX, int mapY, float scaleFactor) {
 			if (minusZoomBitmap == null)
 				return null;
-			
-			Bitmap closestBitmap = scaleUpAndChop(minusZoomBitmap, minusZoomTile, mapX, mapY, scaleFactor);
-			return closestBitmap;
+
+			return scaleUpAndChop(minusZoomBitmap, minusZoomTile, mapX, mapY, scaleFactor);
 		}
 		
 		private Bitmap scaleUpAndChop(Bitmap minusZoomBitmap, Tile minusZoomTile, int mapX, int mapY, float scaleFactor) {
 			
-			Bitmap scaledBitmap = null;
+			Bitmap scaledBitmap;
 			int xIncrement = 1;
 			if(minusZoomTile.mapX!= 1) {
 				xIncrement = mapX % (int)(2*scaleFactor);
@@ -202,8 +194,6 @@ public class ResizedTilesCache extends Thread {
 			if(minusZoomTile.mapY != 1) {
 				yIncrement = mapY % (int)(2*scaleFactor);
 			}
-	
-			//scaledBitmap = BitmapScaler.scaleTo(minusZoomBitmap, mapX, mapY ,scaleFactor,(int)(256*2*scaleFactor), (int)(256*2*scaleFactor));
 		
 			scaledBitmap = BitmapScaler.scaleTo(minusZoomBitmap, scaleFactor, xIncrement, yIncrement);
 			return scaledBitmap;

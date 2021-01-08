@@ -1,4 +1,4 @@
-package com.hackathonopenstreetmap2;
+package com.hackathonopenstreetmap;
 
 import android.app.Activity;
 import android.graphics.Canvas;
@@ -91,7 +91,7 @@ public class MapActivity extends Activity implements IMapInteractionListener,
 
         File destFile = new File(getFilesDir(), "osm_db.sqlite");
 
-        OsmDatabaseHelper osmDbHelper = new OsmDatabaseHelper(this);
+        OsmDatabaseHelper osmDbHelper = new OsmDatabaseHelper();
 
         osmDbHelper.setDatabaseFile(destFile);
 

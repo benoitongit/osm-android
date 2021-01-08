@@ -42,16 +42,16 @@ public class PolylineUtil {
         return poly;
     }
 
-	public static HashMap<String, String> encodePoly(List<GeoPoint> geopoints, int level, int step) {
+	public static HashMap<String, String> encodePoly(List<GeoPoint> geoPoints, int level, int step) {
 
 		HashMap<String, String> resultMap = new HashMap<String, String>();
-		StringBuffer encodedPoints = new StringBuffer();
-		StringBuffer encodedLevels = new StringBuffer();
+		StringBuilder encodedPoints = new StringBuilder();
+		StringBuilder encodedLevels = new StringBuilder();
 
 		int plat = 0;
 		int plng = 0;
 
-		for (GeoPoint g : geopoints) {
+		for (GeoPoint g : geoPoints) {
 			int late5 = floor1e5(g.getLatitudeE6() / 1E6);
 			int lnge5 = floor1e5(g.getLongitudeE6() / 1E6);
 			
@@ -81,7 +81,7 @@ public class PolylineUtil {
 	
 	private static String encodeNumber(int num) {
 
-		StringBuffer encodeString = new StringBuffer();
+		StringBuilder encodeString = new StringBuilder();
 
 		while (num >= 0x20) {
 			int nextValue = (0x20 | (num & 0x1f)) + 63;

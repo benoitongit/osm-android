@@ -11,7 +11,7 @@ public class ManageTilesCached {
 
 	private static final int AVERAGE_TILE_SIZE = 35; // in Kb
 	
-	private File mDirectory;
+	private final File mDirectory;
 	
 	public ManageTilesCached(File directory) {
 		mDirectory = directory;
@@ -31,12 +31,10 @@ public class ManageTilesCached {
 		Thread t = new Thread() {
 			@Override
 			public void run() {
-		
-				//long time = Calendar.getInstance().getTimeInMillis();
 				
 				List<File> files = getAllFilesInDirectories(mDirectory);
 				
-				Map<Long, File> filesMap = new HashMap<Long, File>();
+				Map<Long, File> filesMap = new HashMap<>();
 				for (File file : files) {
 					filesMap.put(file.lastModified(), file);
 				}
@@ -46,43 +44,38 @@ public class ManageTilesCached {
 					
 					int nbFilesToDeleted = (filesSizeKb - limitKb) / AVERAGE_TILE_SIZE;
 					
-					TreeSet<Long> keys = new TreeSet<Long>(filesMap.keySet());
+					TreeSet<Long> keys = new TreeSet<>(filesMap.keySet());
 					for (Long key : keys) {
 						
 						if (nbFilesToDeleted <= 0)
 							break;
 						
 						File fileValue = filesMap.get(key);
-						fileValue.delete();
-						
+						if (fileValue != null) {
+							fileValue.delete();
+						}
+
 						nbFilesToDeleted--;
 					}	
 					
 				}
-				
-				//Log.i("ManageTilesCached", "File count= " + files.size());
-				//Log.i("ManageTilesCached", "time= " + (Calendar.getInstance().getTimeInMillis() - time) + "ms");
-		
 			}
 		};
 		t.start();
 	}
 	
 	public static List<File> getAllFilesInDirectories(File directory) {
-	      
-		List<File> files = new ArrayList<File>();
-	      
-	      for (File file : directory.listFiles()) {
-	          if (file.isFile()) {
-	              
-	        	  files.add(file);
-	        	  
-	          }
-	          if (file.isDirectory()) {
-	        	  files.addAll(getAllFilesInDirectories(file));
-	          }
-	      }
-	      return files;
-	  }
+		List<File> files = new ArrayList<>();
+
+		for (File file : directory.listFiles()) {
+			if (file.isFile()) {
+				files.add(file);
+			}
+			if (file.isDirectory()) {
+				files.addAll(getAllFilesInDirectories(file));
+			}
+		}
+		return files;
+	}
 	
 }

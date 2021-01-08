@@ -1,28 +1,26 @@
 package com.android.lib.map.osm;
 
-import java.util.List;
-import java.util.Map;
-
-import com.android.lib.map.osm.InDbTileLoader.IDbTileLoaderListener;
-
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import com.android.lib.map.osm.InDbTileLoader.IDbTileLoaderListener;
+import java.util.List;
+import java.util.Map;
 
 public class TilesProvider implements IDbTileLoaderListener {
 		
-	private InMemoryTilesCache mInMemoryTilesCache = null;;
-	private ResizedTilesCache mResizedTilesCache = null;
-	private RemoteAsyncTileLoader mRemoteTileLoader = null;
-	private InDbTileLoader mInDbTileLoader;
-	private Handler mHandler;
-	private boolean mAllowRequestTilesViaInternet;
-	private Bitmap mMapTileUnavailableBitmap=null;
+	private final InMemoryTilesCache mInMemoryTilesCache;
+	private final ResizedTilesCache mResizedTilesCache;
+	private final RemoteAsyncTileLoader mRemoteTileLoader;
+	private final InDbTileLoader mInDbTileLoader;
+	private final Handler mHandler;
+	private final boolean mAllowRequestTilesViaInternet;
+
+	private Bitmap mMapTileUnavailableBitmap;
 	
 	
-	public TilesProvider(Context context, Handler handler, boolean allowRequestTilesViaInternet) {
-		mInMemoryTilesCache = new InMemoryTilesCache(context, handler);
+	public TilesProvider(Handler handler, boolean allowRequestTilesViaInternet) {
+		mInMemoryTilesCache = new InMemoryTilesCache();
 		mRemoteTileLoader = new RemoteAsyncTileLoader(handler);
 		mResizedTilesCache = new ResizedTilesCache(handler);
 		mInDbTileLoader = new InDbTileLoader(this);

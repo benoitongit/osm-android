@@ -27,17 +27,17 @@ import com.android.lib.map.osm.utils.CountDownTimer;
 
 public class OsmMapView extends OsmMapViewBase {
 	
-	private IMapInteractionListener mMapInteractionListener;
-	private List<OsmOverlay> mMapOverlays;
-	private GestureDetector mDetector;
-	private ScaleGesturePreFroyoHelper mScaleGesturePreFroyo = null;
+	private final IMapInteractionListener mMapInteractionListener;
+	private final List<OsmOverlay> mMapOverlays;
+	private final GestureDetector mDetector;
+	private final ScaleGesturePreFroyoHelper mScaleGesturePreFroyo = null;
 	private ScaleGestureHelper mScaleGesture = null;
 	private int mZoomFactorForScaleGesture;
 	private boolean mIsScrolling = false;
-	private OsmMarkerOverlay mMarkerOverlay;
-	private OsmTrackOverlay mTrackOverlay;
-	private OsmPolygonOverlay mPolygonOverlay;
-	private OsmMarkerOverlay mTrackStartEndMarkerOverlay;
+	private final OsmMarkerOverlay mMarkerOverlay;
+	private final OsmTrackOverlay mTrackOverlay;
+	private final OsmPolygonOverlay mPolygonOverlay;
+	private final OsmMarkerOverlay mTrackStartEndMarkerOverlay;
 	private float mActionDownEventX;
 	private float mActionDownEventY;
 	private float mActionMoveEventX;
@@ -55,15 +55,7 @@ public class OsmMapView extends OsmMapViewBase {
 		mMapOverlays.clear();
 		setBackgroundColor(mapbuilder.getBackgrounColor()); // Map tile background color before loading tiles 
 
-		try {
-			if (android.os.Build.VERSION.SDK_INT >= 8)
-				mScaleGesture = new ScaleGestureHelper(context, new MySimpleOnScaleGestureListener());
-			else
-				mScaleGesturePreFroyo = new ScaleGesturePreFroyoHelper(new MyScaleGestureListenerPreFroyo());
-		} catch (Error e) {
-			// catch error for 1.6 platform that doesn't handle multitouch
-			mScaleGesturePreFroyo = null;
-		}
+		mScaleGesture = new ScaleGestureHelper(context, new MySimpleOnScaleGestureListener());
 		
 		setMapTileUnavailableBitmap(mapbuilder.getMapTileUnavailableBitmap());
 		
@@ -200,13 +192,11 @@ public class OsmMapView extends OsmMapViewBase {
 	}
 	
 	public boolean zoomInOneLevel() {
-		boolean result = animateZoomIn();
-		return result;
+		return animateZoomIn();
 	}
 
 	public boolean zoomOutOneLevel() {
-		boolean result = animateZoomOut();
-		return result;
+		return animateZoomOut();
 	}
 
 	public void setCenter(GeoPoint location) {
@@ -216,16 +206,6 @@ public class OsmMapView extends OsmMapViewBase {
 
 	
 	public void setCenter(double maxLat, double maxLon, double minLat, double minLon) {
-
-//		if (getWidth() == 0 && getHeight() == 0) {
-//			mSetCenterForBBoxWhenGetView = new Double[4];
-//			mSetCenterForBBoxWhenGetView[0] = maxLat;
-//			mSetCenterForBBoxWhenGetView[1] = maxLon;
-//			mSetCenterForBBoxWhenGetView[2] = minLat;
-//			mSetCenterForBBoxWhenGetView[3] = minLon;
-//			return;
-//		}
-
 		double centerLat = maxLat - ((maxLat - minLat) / 2);
 		double centerLon = maxLon - ((maxLon - minLon) / 2);
 		setCenter(centerLat, centerLon);
@@ -237,17 +217,6 @@ public class OsmMapView extends OsmMapViewBase {
 
 		setZoom(zoom);
 	}
-	
-//	@Override
-//	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//		super.onSizeChanged(w, h, oldw, oldh);
-//		
-//		if (mSetCenterForBBoxWhenGetView != null && w > 0 && h > 0) {
-//			setCenterAndZoom(mSetCenterForBBoxWhenGetView[0], mSetCenterForBBoxWhenGetView[1],
-//					mSetCenterForBBoxWhenGetView[2], mSetCenterForBBoxWhenGetView[3]);
-//			mSetCenterForBBoxWhenGetView = null;
-//		}
-//	}
 
 	public int getZoomLevel() {
 		return mZoomLevel;
@@ -316,9 +285,7 @@ public class OsmMapView extends OsmMapViewBase {
 	public GeoPoint pixelToGeoPointProjection(int x, int y) {
 	    int offsetX = getOffsetX() - x;
 	    int offsetY = getOffsetY() - y;
-			    
-	    GeoPoint g =  getProjectionFromPixels(offsetX, offsetY);
-	    return g;
+	    return getProjectionFromPixels(offsetX, offsetY);
 	}
 
 	public Point geopointToPixelProjection(GeoPoint coordinate) {
@@ -343,7 +310,6 @@ public class OsmMapView extends OsmMapViewBase {
 	@Override
 	protected void onDraw(Canvas canvas)  {
 		super.onDraw(canvas);
-		//mLocationOverlay.dispatchDraw(canvas, this, mLocation, mLocationHeading);
 		mMapInteractionListener.onMapDraw(canvas);
 	}
 	
@@ -372,10 +338,10 @@ public class OsmMapView extends OsmMapViewBase {
 		
 		if (mMapInteractionListener.onMapTouchEvent(event))
 			return true;
-		
+
 		if (mScaleGesturePreFroyo != null && mScaleGesturePreFroyo.onTouchEvent(event))
 			return true; // if true event handled by mScaleGesture
-	
+
 		if (mScaleGesture != null && mScaleGesture.onTouchEvent(event))
 			return true;
 		
@@ -419,9 +385,7 @@ public class OsmMapView extends OsmMapViewBase {
 			int xDownRounded =  Math.round(mActionDownEventX / 20f);
 			int yDownRounded =  Math.round(mActionDownEventY / 20f);
 			int xMoveRounded =  Math.round(mActionMoveEventX / 20f);
-			int yMoveRounded =  Math.round(mActionMoveEventY / 20f);			
-			//Log.i("", "xDownRounded = " + xDownRounded + "  xMoveRounded = " + xMoveRounded);
-			//Log.i("", "yDownRounded = " + yDownRounded + "  yMoveRounded = " + yMoveRounded);
+			int yMoveRounded =  Math.round(mActionMoveEventY / 20f);
 			if (xDownRounded == xMoveRounded && yDownRounded == yMoveRounded 
 					&& mMapInteractionListener != null) {
 				mMapInteractionListener.onMapLongClick(event);
@@ -602,9 +566,7 @@ public class OsmMapView extends OsmMapViewBase {
 		public void onScale(float distanceF) {
 			int distance = (int) distanceF;
 			
-			int zoomFactor = (int) Math.floor(distance / 100);
-			
-			//Log.i("", "zoomFactor = " + zoomFactor);
+			int zoomFactor = (int) Math.floor(distance / 100f);
 			
 			if (mZoomFactorForScaleGesture == 0) {
 				mZoomFactorForScaleGesture = zoomFactor;
@@ -635,8 +597,6 @@ public class OsmMapView extends OsmMapViewBase {
 		
 		@Override
 		public void onScale(MotionEvent event,  float startDistance, float lastDistance) {
-			//Log.i("onScale", "ScaleGesture   startDistance= " + startDistance + "  lastDistance= " + lastDistance);
-			
 			int distance = (int) (startDistance - lastDistance);
 			
 			int zoomFactor = distance / 100;

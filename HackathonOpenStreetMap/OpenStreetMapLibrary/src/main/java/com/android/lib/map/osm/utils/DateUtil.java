@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtil {
 
@@ -16,10 +17,12 @@ public class DateUtil {
 		if (date == null || date.length() == 0)
 			return null;
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(SQL_DATE_FORMAT);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(SQL_DATE_FORMAT, Locale.US);
 		try {
 			myNewDate = dateFormat.parse(date);
-			calendar.setTime(myNewDate);
+			if (myNewDate != null) {
+				calendar.setTime(myNewDate);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} 
@@ -28,7 +31,7 @@ public class DateUtil {
 	
 	public static String longToSqlDateFormat(long date) {
 		Date d = new Date(date);
-		SimpleDateFormat dateFormat = new SimpleDateFormat(SQL_DATE_FORMAT);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(SQL_DATE_FORMAT, Locale.US);
 		return dateFormat.format(d);
 	}
 	
@@ -47,19 +50,19 @@ public class DateUtil {
 		return c;
 	}
 
-	public static Long CalendarTolong(Calendar c) {
+	public static Long calendarToLong(Calendar c) {
 		if (c != null)
 			return c.getTimeInMillis();
 		return null;
 	}
 	
-	public static String getFormatedDate(Calendar c, String format) {
+	public static String getFormattedDate(Calendar c, String format) {
 		try {
 			Date d = new Date(c.getTimeInMillis());
-			SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+			SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
 			return dateFormat.format(d);
 		} catch (Exception e) {
-			return new String();
+			return "";
 		}
 	}
 	

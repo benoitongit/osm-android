@@ -13,9 +13,8 @@ public class Tile {
 	public String key;
 	public int mapTypeId;
 	public byte[] bitmap;
-	
+
 	public Tile() {
-		
 	}
 	
 	public Tile(int x, int y, int z) {
