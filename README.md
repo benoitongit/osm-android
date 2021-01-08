@@ -102,3 +102,36 @@ mapTrack.setTrack(geoPoints);
 trackOverlay.addTrack(mapTrack);
 mapView.addOverlay(trackOverlay);
 ```
+
+**How to add a polygon**
+
+```
+OsmPolygonOverlay overlay = new OsmPolygonOverlay(mapView);
+MapPolygon mapPolygon = new MapPolygon();
+
+// Set polygon border
+Paint paintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
+paintStroke.setColor(Color.RED);
+paintStroke.setStyle(Paint.Style.STROKE);
+paintStroke.setStrokeJoin(Paint.Join.ROUND);
+paintStroke.setStrokeCap(Paint.Cap.ROUND);
+paintStroke.setStrokeWidth(7);
+
+// Fill polygon with slightly transparent red color
+Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+paint.setColor(Color.RED);
+paint.setAlpha(50);
+
+mapPolygon.setPaint(paint);
+mapPolygon.setPaintStroke(paintStroke);
+
+// Add polygon coordinates
+List<GeoPoint> geoPoints = new ArrayList<>();
+geoPoints.add(new GeoPoint(25.774, -80.19));
+geoPoints.add(new GeoPoint(18.466, -66.118));
+geoPoints.add(new GeoPoint(32.321, -64.757 ));
+mapPolygon.setPolygon(geoPoints);
+
+overlay.addPolygon(mapPolygon);
+mapView.addOverlay(overlay);
+```

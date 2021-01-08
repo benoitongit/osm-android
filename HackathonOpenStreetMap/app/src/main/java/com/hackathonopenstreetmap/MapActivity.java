@@ -19,9 +19,11 @@ import com.android.lib.map.osm.controller.IMapInteractionListener;
 import com.android.lib.map.osm.helpers.OsmDatabaseHelper;
 import com.android.lib.map.osm.models.OsmModel;
 import com.android.lib.map.osm.overlay.MapMarker;
+import com.android.lib.map.osm.overlay.MapPolygon;
 import com.android.lib.map.osm.overlay.MapTrack;
 import com.android.lib.map.osm.overlay.OsmLocationOverlay;
 import com.android.lib.map.osm.overlay.OsmMarkerOverlay;
+import com.android.lib.map.osm.overlay.OsmPolygonOverlay;
 import com.android.lib.map.osm.overlay.OsmTrackOverlay;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -92,6 +94,7 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         mOsmMapView.addOverlay(mOsmLocationOverlay);
         addTrack();
         addMarkers();
+        addPolygon();
 
         ViewGroup mapLayout = (ViewGroup) findViewById(R.id.mapLayout);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -159,7 +162,7 @@ public class MapActivity extends Activity implements IMapInteractionListener,
     }
 
     private List<GeoPoint> getTrackFromGpx() {
-        List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
+        List<GeoPoint> geoPoints = new ArrayList<>();
         GPXParser parser = new GPXParser();
         Gpx parsedGpx = null;
         try {
@@ -178,6 +181,33 @@ public class MapActivity extends Activity implements IMapInteractionListener,
             }
         }
         return geoPoints;
+    }
+
+    private void addPolygon() {
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        OsmPolygonOverlay overlay = new OsmPolygonOverlay(mOsmMapView);
+        MapPolygon mapPolygon = new MapPolygon();
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.RED);
+        paint.setAlpha(50);
+        mapPolygon.setPaint(paint);
+        mapPolygon.setPaintStroke(getPolygonStrokePaint());
+        geoPoints.add(new GeoPoint(25.774, -80.19));
+        geoPoints.add(new GeoPoint(18.466, -66.118));
+        geoPoints.add(new GeoPoint(32.321, -64.757 ));
+        mapPolygon.setPolygon(geoPoints);
+        overlay.addPolygon(mapPolygon);
+        mOsmMapView.addOverlay(overlay);
+    }
+
+    private Paint getPolygonStrokePaint() {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(7);
+        return paint;
     }
 
     @Override
