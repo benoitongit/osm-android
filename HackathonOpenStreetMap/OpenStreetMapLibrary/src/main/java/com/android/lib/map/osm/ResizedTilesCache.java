@@ -11,12 +11,13 @@ import com.android.lib.map.osm.models.MapTile;
 public class ResizedTilesCache extends Thread {
 
 
-	private static int MAX_SCALE_FACTOR = 8;
+	private static final int MAX_SCALE_FACTOR = 8;
+
 	private LRUMap<String, Bitmap> mExtrapolatedBitmapCache = new LRUMap<String, Bitmap>(8,8);
-	private Queue<Tile> mRequests = new LinkedList<Tile>();
+	private final Queue<Tile> mRequests = new LinkedList<Tile>();
 	private Tile mResizeTile;
 	private TileScaler mTileScaler = new TileScaler();
-	private Object mLock = new Object();
+	private final Object mLock = new Object();
 	private Handler mHandler;
 	private Bitmap mMapTileUnavailableBitmap=null;
 	
@@ -181,7 +182,7 @@ public class ResizedTilesCache extends Thread {
 	}
 	
 	
-	class TileScaler {
+	private static class TileScaler {
 		
 		public Bitmap scale(Bitmap minusZoomBitmap, Tile minusZoomTile, int mapX, int mapY, float scaleFactor) {
 			if (minusZoomBitmap == null)

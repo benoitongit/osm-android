@@ -8,22 +8,17 @@ import android.content.Context;
 public class OsmDatabaseHelper extends CustomDatabaseHelper {
 	
 	private File mDbFile;
-		
 	
-	public OsmDatabaseHelper(Context context) {
-		super(context);
-	}
-	
-	public boolean openOrCreateDatabase() {
+	public boolean openOrCreateDatabase(Context context) {
 		if (mDbFile != null)
-			return super.openOrCreateDatabase(mContext, mDbFile);
+			return super.openOrCreateDatabase(context, mDbFile);
 	
 		return false;
 	}
 	
-	public boolean openDatabase() {
+	public boolean openDatabase(Context context) {
 		if (mDbFile.exists())
-			return super.openDatabase(mContext, mDbFile);
+			return super.openDatabase(context, mDbFile);
 		
 		return false;
 	}

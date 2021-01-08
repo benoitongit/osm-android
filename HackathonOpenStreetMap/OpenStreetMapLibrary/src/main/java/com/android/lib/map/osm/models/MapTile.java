@@ -19,6 +19,8 @@ import android.util.Log;
 
 public class MapTile extends OsmModel {
 
+	private static final String TAG = MapTile.class.getSimpleName();
+
 	public final static String SQL_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final String TABLE_TILE_NAME = "tiles";
 	
@@ -282,7 +284,7 @@ public class MapTile extends OsmModel {
 				
 				c.close();
 				
-				Log.i("deleteTilesAboveLimitThread", "deleteTilesAboveLimitThread time =" + (Calendar.getInstance().getTimeInMillis() - time) + "ms");
+				Log.i(TAG, "deleteTilesAboveLimitThread time =" + (Calendar.getInstance().getTimeInMillis() - time) + "ms");
 			}
 		};
 		t.start();

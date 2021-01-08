@@ -19,13 +19,6 @@ public class CustomDatabaseHelper {
 	public SQLiteDatabase mDb;
 
 	//private boolean mAlreadyTriedToOpenDb;
-	protected Context mContext;
-	
-	
-	public CustomDatabaseHelper(Context context) {
-		//mAlreadyTriedToOpenDb = false;
-		mContext = context;
-	}
 
 	public boolean openDatabase(Context context, File dbFile) {
 		
@@ -61,7 +54,7 @@ public class CustomDatabaseHelper {
 				Log.i("SQLiteHelper", "Creating database at " + dbFile);
 				mDb = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
 				Log.i("SQLiteHelper", "Opened database at " + dbFile);
-				upgradeFromFile(mDb, R.raw.sql_osm_maptile);
+				upgradeFromFile(context, mDb, R.raw.sql_osm_maptile);
 				return true;
 			}
 		} catch (Exception e) {
@@ -71,11 +64,11 @@ public class CustomDatabaseHelper {
 		return false;
 	}
 
-	private void upgradeFromFile(SQLiteDatabase db, int ressourceId) {
+	private void upgradeFromFile(Context context, SQLiteDatabase db, int ressourceId) {
 		InputStream sqlFile = null;
 		
 		try {
-			sqlFile = mContext.getResources().openRawResource(ressourceId);
+			sqlFile = context.getResources().openRawResource(ressourceId);
 		} catch (Resources.NotFoundException e) {
 			e.printStackTrace();
 			return;

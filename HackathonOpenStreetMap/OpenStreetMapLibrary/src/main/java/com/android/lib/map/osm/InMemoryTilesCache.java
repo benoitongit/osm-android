@@ -6,7 +6,7 @@ import android.os.Handler;
 
 public class InMemoryTilesCache {
 	private LRUMap<String, Bitmap> mBitmapCache = new LRUMap<String, Bitmap>(8, 8);
-	private Object mLock = new Object();
+	private final Object mLock = new Object();
 
 	public InMemoryTilesCache(Context context, Handler handler) {
 

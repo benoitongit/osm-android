@@ -68,7 +68,7 @@ public class RequestTile {
 		}
 	}
 	
-	class OsmBasePool {
+	private static class OsmBasePool {
 		private Vector<String> bases = new Vector<String>();
 		private int iterator = 0;
 

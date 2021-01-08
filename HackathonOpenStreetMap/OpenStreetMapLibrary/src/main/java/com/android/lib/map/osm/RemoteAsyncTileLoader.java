@@ -53,7 +53,7 @@ public class RemoteAsyncTileLoader {
 		}
 	}
 	
-	private class TileRequestTask extends Thread {
+	private static class TileRequestTask extends Thread {
 		
 		private static final int MAX_QUEUE_REQUEST = 6;
 		

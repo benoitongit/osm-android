@@ -55,15 +55,7 @@ public class OsmMapView extends OsmMapViewBase {
 		mMapOverlays.clear();
 		setBackgroundColor(mapbuilder.getBackgrounColor()); // Map tile background color before loading tiles 
 
-		try {
-			if (android.os.Build.VERSION.SDK_INT >= 8)
-				mScaleGesture = new ScaleGestureHelper(context, new MySimpleOnScaleGestureListener());
-			else
-				mScaleGesturePreFroyo = new ScaleGesturePreFroyoHelper(new MyScaleGestureListenerPreFroyo());
-		} catch (Error e) {
-			// catch error for 1.6 platform that doesn't handle multitouch
-			mScaleGesturePreFroyo = null;
-		}
+		mScaleGesture = new ScaleGestureHelper(context, new MySimpleOnScaleGestureListener());
 		
 		setMapTileUnavailableBitmap(mapbuilder.getMapTileUnavailableBitmap());
 		
