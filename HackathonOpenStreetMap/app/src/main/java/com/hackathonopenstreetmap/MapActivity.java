@@ -2,9 +2,12 @@ package com.hackathonopenstreetmap;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -17,10 +20,25 @@ import com.android.lib.map.osm.controller.IMapInteractionListener;
 import com.android.lib.map.osm.helpers.OsmDatabaseHelper;
 import com.android.lib.map.osm.models.OsmModel;
 import com.android.lib.map.osm.overlay.MapMarker;
+import com.android.lib.map.osm.overlay.MapTrack;
 import com.android.lib.map.osm.overlay.OsmLocationOverlay;
 import com.android.lib.map.osm.overlay.OsmMarkerOverlay;
+import com.android.lib.map.osm.overlay.OsmTrackOverlay;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import io.ticofab.androidgpxparser.parser.GPXParser;
+import io.ticofab.androidgpxparser.parser.domain.Gpx;
+import io.ticofab.androidgpxparser.parser.domain.Track;
+import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
+import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
 
 public class MapActivity extends Activity implements IMapInteractionListener,
         LocationListenerHelper.IMyLocationListener {
@@ -74,14 +92,14 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         mOsmLocationOverlay = new OsmLocationOverlay(getApplicationContext(), mapBuilder, mOsmMapView);
 
         mOsmMapView.addOverlay(mOsmLocationOverlay);
+        addTrack();
+        addMarkers();
 
         ViewGroup mapLayout = (ViewGroup) findViewById(R.id.mapLayout);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         mapLayout.addView(mOsmMapView, layoutParams);
-
-        addMarkers();
 
         mOsmMapView.setCenter(37.7793, -122.4192);
         mOsmMapView.setZoom(4);
@@ -106,15 +124,15 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.tubi_marker);
         OsmMarkerOverlay markerOverlay = new OsmMarkerOverlay(mOsmMapView, drawable);
         // Tubi SF office
-        addMarker(new GeoPoint((int) (37.792260 * 1e6), (int) (-122.403490 * 1e6)), markerOverlay);
+        addMarker(new GeoPoint(37.792260, -122.403490), markerOverlay);
         // Chicago SF office
-        addMarker(new GeoPoint((int) (41.888650 * 1e6), (int) (-87.627460 * 1e6)), markerOverlay);
+        addMarker(new GeoPoint(41.888650, -87.627460), markerOverlay);
         // LA SF office
-        addMarker(new GeoPoint((int) (34.057330 * 1e6), (int) (-118.417170 * 1e6)), markerOverlay);
+        addMarker(new GeoPoint(34.057330, -118.417170), markerOverlay);
         // NYC SF office
-        addMarker(new GeoPoint((int) (40.754080 * 1e6), (int) (-73.988820 * 1e6)), markerOverlay);
+        addMarker(new GeoPoint(40.754080, -73.988820), markerOverlay);
         // Beijing SF office
-        addMarker(new GeoPoint((int) (40.009477 * 1e6), (int) (116.461179 * 1e6)), markerOverlay);
+        addMarker(new GeoPoint(40.009477, 116.461179), markerOverlay);
         mOsmMapView.addOverlay(markerOverlay);
     }
 
@@ -122,6 +140,46 @@ public class MapActivity extends Activity implements IMapInteractionListener,
         MapMarker marker = new MapMarker();
         marker.setCoordinate(p);
         markerOverlay.addMarker(marker);
+    }
+
+    private void addTrack() {
+        OsmTrackOverlay trackOverlay = new OsmTrackOverlay(mOsmMapView);
+        MapTrack mapTrack = new MapTrack();
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setDither(true);
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(8);
+
+        mapTrack.setPaint(paint);
+        mapTrack.setTrack(getTrackFromGpx());
+        trackOverlay.addTrack(mapTrack);
+        mOsmMapView.addOverlay(trackOverlay);
+    }
+
+    private List<GeoPoint> getTrackFromGpx() {
+        List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
+        GPXParser parser = new GPXParser();
+        Gpx parsedGpx = null;
+        try {
+            InputStream in = getAssets().open("morning_run.gpx");
+            parsedGpx = parser.parse(in);
+        } catch (IOException | XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        if (parsedGpx != null) {
+            for (Track track: parsedGpx.getTracks()) {
+                for (TrackSegment trackSegment: track.getTrackSegments()) {
+                    for (TrackPoint point: trackSegment.getTrackPoints()) {
+                        geoPoints.add(new GeoPoint(point.getLatitude(), point.getLongitude()));
+                    }
+                }
+            }
+        }
+        return geoPoints;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.android.lib.map.osm;
 
 
+import android.util.Log;
+
 public class Projection {
 
 	// OrignShift  2 * math.pi * 6378137 / 2.0
@@ -19,7 +21,7 @@ public class Projection {
 		
 		// Scale to map
 		x = ((x + MAX_X) / (MAX_X * 2)) * mapWidth;
-		
+
 		return (int) x;
 	}
 

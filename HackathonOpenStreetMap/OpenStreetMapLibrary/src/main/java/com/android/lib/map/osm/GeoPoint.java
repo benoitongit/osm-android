@@ -4,11 +4,20 @@ import java.io.Serializable;
 
 public class GeoPoint implements Serializable {
 
-	private static final long serialVersionUID = -6241356443051839339L;
-	
-	
 	private int latitudeE6 = 0;
     private int longitudeE6 = 0;
+
+    public GeoPoint() { }
+
+    public GeoPoint(int latitudeE6, int longitudeE6) {
+        setLatitudeE6(latitudeE6);
+        setLongitudeE6(longitudeE6);
+    }
+
+    public GeoPoint(double latitude, double longitude) {
+        setLatitudeE6((int) (latitude * 1e6));
+        setLongitudeE6((int) (longitude * 1e6));
+    }
 
     public int getLatitudeE6() {
         return latitudeE6;
@@ -21,6 +30,7 @@ public class GeoPoint implements Serializable {
     public int getLongitudeE6() {
         return longitudeE6;
     }
+
     public double normalizeLatitude(double latitude) {
     	 
     	if (!Double.isNaN(latitude)) {
@@ -32,6 +42,7 @@ public class GeoPoint implements Serializable {
 
     	return latitude * 1E6;
     }
+
     public double normalizeLongitude(double longitude) {
     	 
     	if (!Double.isNaN(longitude)) {
@@ -45,16 +56,8 @@ public class GeoPoint implements Serializable {
 
     	return longitude * 1E6;
     }
+
     public void setLongitudeE6(int longitudeE6) {
         this .longitudeE6 =  (int)(normalizeLongitude(longitudeE6 / 1E6));
     }
-
-    public GeoPoint() {
-    }
-
-    public GeoPoint(int latitudeE6, int longitudeE6) {
-        setLatitudeE6(latitudeE6);
-        setLongitudeE6(longitudeE6);
-    }
-
 }
