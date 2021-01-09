@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HackathonOpenStreetMap2">
+        android:theme="@style/Theme.OSM_Android">
         <activity
             android:name="com.demo.MapActivity"
             android:label="@string/title_activity_main" >

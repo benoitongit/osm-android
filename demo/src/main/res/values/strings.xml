@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">HackathonOpenStreetMap2</string>
+    <string name="app_name">OSM Android</string>
     <string name="title_activity_main">MapActivity</string>
 </resources>
