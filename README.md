@@ -1,6 +1,6 @@
 # OSM Android
 
-OSM Android is a free Android map library using OpenStreetMap https.
+OSM Android is a free Android map library using OpenStreetMap tiles.
 
 ![alt text](https://github.com/benoitongit/osm-android/blob/main/map_screenshot.jpg?raw=true)
 
