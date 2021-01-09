@@ -14,10 +14,35 @@ OSM Android is a free Android map library using OpenStreetMap https.
 
 ## Requirements
 
-Tile works on Android X.X+ (API level XX+) and on Java X+.
+OSM-Android works with API 21 and up.
+It runs using a gradle script version 6.5.
 
 ## Getting started
 
+After you download the project, you may import into Android Studio the library using either the source code or the .aar file provided.
+
+For .aar:
+ * Click File > New > New Module.
+ * Select the option "Import .JAR/.AAR Package", then click Next.
+ * Select `osm_android.aar` in the root level of osm-android.
+ 
+For the full library, if you wish to have the source code as well:
+ * Click File > New > Import Module.
+ * Select the `library` folder in the root level of osm-android.
+ 
+Then, be sure in your projects root gradle file to add the following:
+```
+implementation project(":[library module name]")
+```
+
+Also verify your `settings.gradle` has the following
+```
+include ':app', ':[library module name]'
+```
+
+For more info, see the google developer docs on [importing libraries](https://developer.android.com/studio/projects/android-library#AddDependency).
+
+## Using OSM Android
 ### Manifest
 
 In most cases, you will have to set the following authorizations in your AndroidManifest.xml:
