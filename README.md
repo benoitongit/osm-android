@@ -92,7 +92,7 @@ protected void onDestroy() {
 
 **How to add the position indicator**
 ```
-OsmMapView.OsmMapViewConfig mapConfig = new OsmMapView.OsmMapViewConfig();
+OsmMapViewConfig mapConfig = new OsmMapViewConfig();
 mapConfig.setPositionIndicatorDrawableId(R.drawable.blue_position_indicator);
 OsmLocationOverlay overlay = new OsmLocationOverlay(getApplicationContext(), mapConfig, mapView);
 mapView.addOverlay(overlay);
@@ -171,6 +171,6 @@ mapView.addOverlay(overlay);
 ## Feature Roadmap
 * Show current location
 * Support infinite world map scroll
-* Support .svg marker
+* Support .svg for marker
 * Add ability to download a map area for offline usage
 * Add zoom in/out buttons
